@@ -1,9 +1,3 @@
-Here is a polished, professional-looking **README.md** with added headings, spacing, formatting, icons, and improved readability — **but keeping your original information the same**.
-
-You can copy-paste it directly into GitHub:
-
----
-
 # 🚀 **Customised Virtual File System (CVFS)**
 
 A custom implementation of a Virtual File System built in **C/C++**.
@@ -14,7 +8,7 @@ This project simulates the core functionality of the Linux File System by implem
 
 ## 🏗️ **Technical Architecture**
 
-The file system is **monolithic** and runs entirely in **user space**. It relies on internally defined data structures to manage metadata and data allocation, mimicking the Unix File Subsystem.
+The file system is **monolithic** and operates entirely in **user space**. It relies on a set of custom data structures that manage metadata and data allocation, closely mimicking the Unix File Subsystem.
 
 ---
 
@@ -22,92 +16,102 @@ The file system is **monolithic** and runs entirely in **user space**. It relies
 
 ### 📌 **`struct Inode` (Linked List)**
 
-* Holds file metadata: File Size, Type (Regular/Special), Permissions
-* Implemented as a **Linked List** to support dynamic file creation
+Holds file metadata including File Size, Type (Regular/Special), and Permissions.
+Implemented as a **Linked List** to allow dynamic growth of files.
 
 ### 📌 **`struct FileTable`**
 
-* Maintains:
+Maintains the runtime context for open files:
 
-  * ReadOffset
-  * WriteOffset
-* Stores runtime context for every open file
+* ReadOffset
+* WriteOffset
+* Mode
 
 ### 📌 **`struct SuperBlock`**
 
-* Manages global file system state:
+Tracks the global state of the file system:
 
-  * Total inode count
-  * Free inode count
-  * File system limits
+* Total inode capacity
+* Available inodes
+* File system limits
 
 ### 📌 **`struct UAREA` (User Area)**
 
-* Contains the **UFDT** (User File Descriptor Table)
-* Maps **File Descriptors (FD)** → internal FileTable pointers
+Contains the **UFDT** (User File Descriptor Table).
+Maps integer File Descriptors (FD) to internal FileTable structures.
 
 ---
 
 ## ⚙️ **Configuration Macros**
 
-| Macro                      | Value      | Description                |
-| -------------------------- | ---------- | -------------------------- |
-| **MAXINODE**               | 50         | Maximum number of files    |
-| **MAXFILESIZE**            | 1024 bytes | Fixed block size per file  |
-| **READ / WRITE / EXECUTE** | 1 / 2 / 4  | Standard permission macros |
+* **MAXINODE:** 50
+  Determines the maximum number of files.
+
+* **MAXFILESIZE:** 1024 bytes
+  Fixed block size per file.
+
+* **READ / WRITE / EXECUTE:** 1 / 2 / 4
+  Standard permission macros representing read, write, and execute access.
 
 ---
 
 ## 🛠️ **Project Features**
 
-### ✔️ Custom Shell
+* **Custom Shell:**
+  A built-in command-line interface to interpret user commands and execute system calls.
 
-A built-in command-line interface to interpret user inputs and execute system calls.
+* **System Call Simulation:**
+  Implements the logic of `open`, `close`, `read`, `write`, and `lseek` manually.
 
-### ✔️ System Call Simulation
+* **Dynamic Memory Management:**
+  Uses `malloc` and `free` to allocate and release inodes and data memory when files are deleted.
 
-Implements custom logic for:
-`open`, `close`, `read`, `write`, `lseek`
+* **Error Handling:**
+  Includes custom error codes (-1 to -7) for conditions like:
 
-### ✔️ Dynamic Memory Management
-
-Uses `malloc` and `free` to allocate inodes and reclaim memory on file deletion.
-
-### ✔️ Error Handling
-
-Custom error codes `(-1 to -7)` for:
-
-* Insufficient Space
-* File Not Found
-* Permission Denied
-* Invalid Operation
+  * Insufficient space
+  * File not found
+  * Permission denied
 
 ---
 
 ## 📚 **Command Support**
 
-| Command    | Description           | Usage                       |
-| ---------- | --------------------- | --------------------------- |
-| **creat**  | Create a new file     | `creat [name] [permission]` |
-| **write**  | Write data to a file  | `write [fd]`                |
-| **read**   | Read data from a file | `read [fd] [size]`          |
-| **ls**     | List all files        | `ls`                        |
-| **stat**   | Show file metadata    | `stat [name]`               |
-| **unlink** | Delete a file         | `unlink [name]`             |
-| **clear**  | Clear console         | `clear`                     |
-| **exit**   | Exit the system       | `exit`                      |
+**creat** — Create a new file
+Usage: `creat [name] [permission]`
+
+**write** — Write data to a file
+Usage: `write [fd]`
+
+**read** — Read data from a file
+Usage: `read [fd] [size]`
+
+**ls** — List all files
+Usage: `ls`
+
+**stat** — Display file metadata
+Usage: `stat [name]`
+
+**unlink** — Delete a file
+Usage: `unlink [name]`
+
+**clear** — Clear the console
+Usage: `clear`
+
+**exit** — Terminate the virtual file system
+Usage: `exit`
 
 ---
 
 ## 💻 **Usage**
 
-### 🧪 **Compilation**
+### 📦 **Compilation**
 
 ```bash
 g++ CVFS.cpp -o Myexe
 ```
 
-### ▶️ **Running the Shell**
+### ▶️ **Run the Shell**
 
 ```bash
 ./Myexe
@@ -138,17 +142,12 @@ Link Count: 1
 
 ## 🔮 **Future Enhancements**
 
-* [ ] **Persistence:** Save inodes and data blocks to physical disk
-* [ ] **Multi-user support:** Enhance UAREA for multiple user environments
-* [ ] **Directory Support:** Add hierarchical directory structure
+* [ ] **Persistence:** Store inodes and data blocks on a physical file to prevent data loss.
+* [ ] **Multi-user Support:** Extend UAREA to manage multiple simulated users.
+* [ ] **Directory Support:** Add hierarchical directory structures instead of the current flat file system.
 
 ---
 
 ## 👤 **Author**
 
 **Rohan Murlidhar Pawar**
-
-🔗 *LinkedIn*
-🔗 *GitHub*
-
-
